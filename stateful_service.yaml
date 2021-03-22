@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: srepaul-service
+spec:
+  type: NodePort
+  selector:
+    app: srepaul
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 31981
+---
+apiVersion: apps/v1
+kind: StatefulSet # assuming that cluster is configured to dynamically provision PersistentVolumes
+metadata:
+  name: srepaul
+spec:
+  serviceName: "srepaul"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srepaul
+  template:
+    metadata:
+      labels:
+        app: srepaul
+    spec:
+      containers:
+      - name: srepaul
+        image: paulrobu/srepaul:latest
+        ports:
+        - containerPort: 5000
+          name: srepaul
+        volumeMounts:
+        - name: srepaul-persistent-storage
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: srepaul-persistent-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 50Mi
