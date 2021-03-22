@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}
+SRE by PAUL
+{% endblock %}
+{% block content %}
+<h4 class="text-center font-italic"></br></br>
+    <span class="font-weight-bold">S</span>ite
+    <span class="font-weight-bold">R</span>edirection
+    <span class="font-weight-bold">E</span>ngine</br>by
+    <span class="font-weight-bold">P</span>runing
+    <span class="font-weight-bold">A</span>ny
+    <span class="font-weight-bold">U</span>RL
+    <span class="font-weight-bold">L</span>ocally
+</h4>
+</br>
+<form method="post">
+    <div class="form-group">
+        <label for="shorturl"></label>
+        <input type="hidden" name="shorturl" readonly class="form-control">
+        {{ request.form['shorturl'] }}</input>
+    </div>
+    <div class="form-group">
+        <label for="longurl">Your Long URL:</label>
+        <input type="text" name="longurl" placeholder="http(s)://" class="form-control">
+        </input>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Generate Short URL</button>
+    </div>
+</form>
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+{% if category == "error" %}
+<div class="alert alert-danger">{{ message|safe }}</div>
+{% elif category == "info" %}
+<div class="alert alert-success">{{ message|safe }}</div>
+{% elif category == "message" %}
+<div class="alert alert-primary">{{ message|safe }}</div>
+{% endif %}
+{% endfor %}
+
+{% endblock %}

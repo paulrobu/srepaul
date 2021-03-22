@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Catalog {% endblock %}
+{% block content %}
+</br>
+{% for url in catalog %}
+<a href="{{ url_for('stats', url=url['shorturl']) }}">
+    <h4>{{ url['shorturl'] }}</h4>
+</a>
+<span class="badge badge-secondary">{{ url['longurl'] }}</span>
+<hr>
+{% endfor %}
+{% endblock %}
